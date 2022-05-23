@@ -11,24 +11,21 @@ function Square(props) {
 }
 
 class Board extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      squares: Array(9).fill(null),
-      xIsNext: true
-    }
-  }
-
   handleClick(index) {
-    const squares = this.state.squares.slice();
+    const history = this.state.history;
+    const current = history[history.length - 1];
+    const squares = current.squares.slice();
     
     if (calculateWinner(squares) || squares[index]) {
       return;
     }
 
     squares[index] = this.state.xIsNext ? 'X' : 'O';
+
     this.setState({ 
-      squares: squares,
+      history: history.concat([{
+        squares: squares
+      }]),
       xIsNext: !this.state.xIsNext
     });
   }
@@ -36,8 +33,8 @@ class Board extends React.Component {
   renderSquare(index) {
     return (
       <Square 
-        value={this.state.squares[index]}
-        onClick={() => this.handleClick(index)}
+        value={this.props.squares[index]}
+        onClick={() => this.props.onClick(index)}
       />
     );
   }
@@ -53,7 +50,6 @@ class Board extends React.Component {
 
     return (
       <div>
-        <div className="status">{status}</div>
         <div className="board-row">
           {this.renderSquare(0)}
           {this.renderSquare(1)}
@@ -75,14 +71,39 @@ class Board extends React.Component {
 }
 
 class Game extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      history: [{
+        squares: Array(9).fill(null)
+      }],
+      xIsNext: true
+    };
+  }
+
   render() {
+    const history = this.state.history;
+    const current = history[history.length-1];
+    const winner = calculateWinner(current.squares);
+
+    let status;
+
+    if (winner) {
+      status = `Winner: ${winner}!!!`
+    } else {
+      status = `Next: Player ${this.state.xIsNext ? 'X' : 'O'} Turn`;
+    }
+
     return (
       <div className="game">
         <div className="game-board">
-          <Board />
+          <Board 
+            squares = { current.squares }
+            onClick = {(index) => this.handleClick(index)} />
         </div>
         <div className="game-info">
-          <div>{/* status */}</div>
+          <div>{status}</div>
           <ol>{/* TODO */}</ol>
         </div>
       </div>
