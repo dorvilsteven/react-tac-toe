@@ -11,25 +11,6 @@ function Square(props) {
 }
 
 class Board extends React.Component {
-  handleClick(index) {
-    const history = this.state.history;
-    const current = history[history.length - 1];
-    const squares = current.squares.slice();
-    
-    if (calculateWinner(squares) || squares[index]) {
-      return;
-    }
-
-    squares[index] = this.state.xIsNext ? 'X' : 'O';
-
-    this.setState({ 
-      history: history.concat([{
-        squares: squares
-      }]),
-      xIsNext: !this.state.xIsNext
-    });
-  }
-
   renderSquare(index) {
     return (
       <Square 
@@ -40,14 +21,6 @@ class Board extends React.Component {
   }
 
   render() {
-    const winner = calculateWinner(this.state.squares);
-    let status;
-    if (winner) {
-      status = `Winner: Player ${winner}`;
-    } else {
-      status = `Next: Player ${this.state.xIsNext ? 'X' : 'O'} Turn`;
-    }
-
     return (
       <div>
         <div className="board-row">
@@ -71,7 +44,6 @@ class Board extends React.Component {
 }
 
 class Game extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -80,6 +52,25 @@ class Game extends React.Component {
       }],
       xIsNext: true
     };
+  }
+
+  handleClick(index) {
+    const history = this.state.history;
+    const current = history[history.length - 1];
+    const squares = current.squares.slice();
+    
+    if (calculateWinner(squares) || squares[index]) {
+      return;
+    }
+
+    squares[index] = this.state.xIsNext ? 'X' : 'O';
+
+    this.setState({ 
+      history: history.concat([{
+        squares: squares
+      }]),
+      xIsNext: !this.state.xIsNext
+    });
   }
 
   render() {
