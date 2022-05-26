@@ -14,8 +14,11 @@
   Play Tic-Tac-Toe, with the ability to go back to any move, and more.
 
   ## Installation
-  [React-Tac-Toe](https://github.com/dorvilsteven/react-tac-toe)
-  
+  [React-Tac-Toe](https://dorvilsteven.github.io/react-tac-toe/)
+  Visit our webpage, and have fun!!
+
+  or
+
   Git Clone the application and simply run npm start to open the page on your localhost
 
   ## Usage
